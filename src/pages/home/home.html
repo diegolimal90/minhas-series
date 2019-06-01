@@ -7,18 +7,13 @@
 </ion-header>
 
 <ion-content padding>
-  <!-- <ion-list>
-    <ion-item-sliding *ngFor="let login of logins | async">
-      <ion-item>
-        <h1>{{ login.nome }}</h1>
-        <h2>{{ login.email }}</h2>
-        <p>{{ login.id }}</p>
-      </ion-item>
-    </ion-item-sliding>
-  </ion-list> -->
-  <!-- <ion-fab bottom right>
-    <button ion-fab color="primary" (click)="newContact()">
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </ion-fab> -->
+  <ion-list>
+    <button ion-item *ngFor="let serie of series | async" (click)="verSerie(serie)">
+      {{ serie.nome }}
+    </button> 
+  </ion-list>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" class="pr-1" (click)="novaSerie()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

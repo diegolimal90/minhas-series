@@ -5,18 +5,19 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { environment } from '../environments/environment';
 import firebase from 'firebase';
 
-// import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { Storage } from '@ionic/Storage';
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   rootPage:any = LoginPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, storage: Storage) {
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
+
     });
 
     firebase.initializeApp(environment.firebase);

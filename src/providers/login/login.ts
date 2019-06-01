@@ -5,45 +5,46 @@ import 'rxjs/add/operator/map';
 // We MUST import both the firebase AND firestore modules like so
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { CredenciaisDTO } from '../../models/credenciais.dto';
+import { UserDTO } from '../../models/user.dto';
 
 @Injectable()
 export class LoginProvider {
    private PATH = '/usuario';
    private db: any;
+
    constructor(public http: HttpClient) {
       // Initialise access to the firestore service
       this.db = firebase.firestore();
    }
 
-   getLogin(email: string, senha: string): Promise<any> {
+   getLogin(creds: CredenciaisDTO): Promise<UserDTO> {
       return new Promise((resolve, reject) => {
-         this.db.collection("/usuario")
-            .where("email", "==", email)
-            .where("senha", "==", senha)
+         this.db.collection(this.PATH)
+            .where("email", "==", creds.email)
+            .where("senha", "==", creds.senha)
             .get()
             .then((querySnapshot) => {
                // Declare an array which we'll use to store retrieved documents
-               let obj: any = [];
-               // Iterate through each document, retrieve the values for each field
-               // and then assign these to a key in an object that is pushed into the
-               // obj array
-               querySnapshot
-                  .forEach((doc: any) => {
-                     obj.push({
-                        id: doc.id,
-                        email: doc.data().email,
-                        nome: doc.data().nome,
-                        senha: doc.data().senha
-                     });
-                  });
+               let obj: UserDTO = {
+                  id: "",
+                  email: "",
+                  nome: ""
+               };
                // Resolve the completed array that contains all of the formatted data
                // from the retrieved documents
-               if (obj.length > 0) {
-                  if (obj[0].email == email && obj[0].senha == senha) {
-                     resolve(obj);
+               if (querySnapshot) {
+                  querySnapshot
+                     .forEach((doc: any) => {
+                        obj.id = doc.id;
+                        obj.email = doc.data().email;
+                        obj.nome = doc.data().nome;
+                     });
+                  if (obj.email == creds.email) {
+                     resolve(obj)
+                     // this.storage.set("usuario", obj);
                   }
                }
-               resolve(obj);
             })
             .catch((error: any) => {
                reject(error);

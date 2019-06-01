@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { SeriesProvider } from '../../providers/series/series';
+import { FormPage } from '../form/form';
+import { ViewPage } from '../view/view';
 
 @Component({
   selector: 'page-home',
@@ -7,8 +10,24 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  series: any;
+
+  constructor(public navCtrl: NavController, private provider: SeriesProvider) {
     
   }
 
+  ionViewDidLoad() {
+    this.series = this.provider.getSeries();
+  }
+
+  ionViewDidEnter(){  
+  }
+
+  novaSerie(){
+    this.navCtrl.push(FormPage)
+  }
+
+  verSerie(serie){
+    this.navCtrl.push(ViewPage, {serie: serie});
+  }
 }

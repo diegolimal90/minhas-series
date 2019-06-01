@@ -4,21 +4,21 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form padding [formGroup]="loginForm" (submit)="login()" novalidate>
+  <form padding [formGroup]="loginForm" novalidate>
     <ion-item>
-      <ion-input [(ngModel)]="email" formControlName="email" type="text" placeholder="E-mail" clearInput
+      <ion-input [(ngModel)]="creds.email" name="email" formControlName="email" type="email" placeholder="E-mail" clearInput
         clearOnEdit="false">
       </ion-input>
       <h6 *ngIf="errorEmail" class="error"> {{messageEmail}}</h6>
     </ion-item>
     <ion-item>
-      <ion-input [(ngModel)]="password" formControlName="password" type="password" placeholder="Password" clearInput
+      <ion-input [(ngModel)]="creds.senha" name="senha" formControlName="senha" type="password" placeholder="Password" clearInput
         clearOnEdit="false">
       </ion-input>
       <h6 *ngIf="errorPassword" class="error"> {{messagePassword}}</h6>
     </ion-item>
     
-    <button ion-button type="submit" block color="secondary">enviar</button>
+    <button ion-button type="submit" block color="secondary" (click)="login()">enviar</button>
     <button ion-button block clear>Não tenho acesso</button>
   </form>
 </ion-content>

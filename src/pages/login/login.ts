@@ -4,13 +4,10 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 
 import { LoginProvider } from '../../providers/login/login';
-// import { HomePage } from '../home/home';
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { CredenciaisDTO } from '../../models/credenciais.dto';
+import { UserDTO } from '../../models/user.dto';
+import { HomePage } from '../home/home';
+import { Storage } from '@ionic/Storage';
 
 @IonicPage()
 @Component({
@@ -24,40 +21,38 @@ export class LoginPage {
   messagePassword = "";
   errorEmail = false;
   errorPassword = false;
-  logins: Promise<any>;
+  user: UserDTO;
+  creds: CredenciaisDTO = {
+    email: "",
+    senha:""
+  }
   
   constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, 
-    private provider: LoginProvider) {
+    private provider: LoginProvider, private storage: Storage) {
 
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(20),
+      senha: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(20),
       Validators.required])],
     });
 
   }
 
   ionViewDidLoad() {
+    if(this.storage.get("usuario")){
+      this.navCtrl.setRoot(HomePage);
+    }
   }
 
   login() {
-    let { email, password } = this.loginForm.controls;
-    if (!this.loginForm.valid) {
-      if (!email.valid) {
-        this.errorEmail = true;
-        this.messageEmail = "Ops! Email inválido";
-      } else {
-        this.messageEmail = "";
-      }
-      if (!password.valid) {
-        this.errorPassword = true;
-        this.messagePassword = "Ops! Email inválido";
-      } else {
-        this.messagePassword = "";
-      }
-    }else{
-      this.logins = this.provider.getLogin(email.value, password.value);
-      console.log(this.logins)
+    this.provider.getLogin(this.creds).then((data) => {
+      this.user = data
+      this.storage.set("usuario", this.user);
+    }).catch((error) => {
+      console.log(error)
+    });
+    if (this.storage.get("usuario")){
+      this.navCtrl.setRoot(HomePage);
     }
   }
 
