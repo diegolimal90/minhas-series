@@ -23,7 +23,7 @@ export class LoginPage{
   errorPassword = false;
   user: UserDTO;
   creds: CredenciaisDTO = {
-    email: "",
+    email:"",
     senha:""
   }
   usrLogado: UserDTO[] = [];
@@ -77,4 +77,6 @@ export class LoginPage{
       console.log(error)
     });
   }
+
+  
 }

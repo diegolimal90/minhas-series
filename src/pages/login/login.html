@@ -1,6 +1,6 @@
-<ion-header>
+<ion-header >
   <ion-toolbar>
-    <ion-title>Acessar App</ion-title>
+    <h1 style="text-align: center;">Entrar</h1>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -18,7 +18,7 @@
       <h6 *ngIf="errorPassword" class="error"> {{messagePassword}}</h6>
     </ion-item>
     
-    <button ion-button type="submit" block color="secondary" (click)="login()">enviar</button>
-    <button ion-button block clear>Não tenho acesso</button>
+    <button ion-button type="submit" block color="primary" (click)="login()">Entrar</button>
+    <button ion-button block clear color="dark">Não tenho acesso</button>
   </form>
 </ion-content>

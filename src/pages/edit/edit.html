@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>Editar Serie</ion-title>
+    <h1>Editar Serie</h1>
   </ion-navbar>
 </ion-header>
 
@@ -23,18 +23,18 @@
   <ion-row>
     <ion-col>
       <button ion-button icon-start clear small (click)="tirarFoto()">
-        <ion-icon name="camera"></ion-icon>
-        <div>Tirar Foto</div>
+        <ion-icon name="camera" color="dark"></ion-icon>
+        <p>Tirar Foto</p>
       </button>
     </ion-col>
     <ion-col>
       <button ion-button icon-start clear small (click)="enviarArquivo()">
-        <ion-icon name="cloud-upload"></ion-icon>
-        <div>Enviar Imagem</div>
+        <ion-icon name="cloud-upload" color="dark" ></ion-icon>
+        <p>Enviar Imagem</p>
       </button>
     </ion-col>
   </ion-row>
-  <ion-item>
+ 
     <button ion-button type="submit" block color="primary" (click)="salvar()">Salvar</button>
-  </ion-item>
+ 
 </ion-content>
