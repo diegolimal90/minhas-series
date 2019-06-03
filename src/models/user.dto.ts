@@ -3,3 +3,9 @@ export interface UserDTO {
     email: string,
     nome: string
 }
+
+export class User{
+    id: string
+    email: string
+    nome: string
+}

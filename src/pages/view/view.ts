@@ -21,7 +21,8 @@ export class ViewPage {
 
   serie: SerieDTO;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private provider: SeriesProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    private provider: SeriesProvider) {
     this.serie = navParams.get("serie");
   }
 
@@ -34,6 +35,6 @@ export class ViewPage {
 
   excluir(){
     this.provider.excluirSerie(this.serie)
-    this.navCtrl.push(HomePage)
+    this.navCtrl.setRoot(HomePage)
   }
 }

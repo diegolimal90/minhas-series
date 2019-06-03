@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
 import { SerieDTO } from '../../models/serie.dto';
 import { SeriesProvider } from '../../providers/series/series';
 import { HomePage } from '../home/home';
+import { storage } from 'firebase';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 /**
  * Generated class for the FormPage page.
@@ -23,17 +29,67 @@ export class FormPage {
     nome: "",
     descricao: "",
     foto: ""
-  }
+  };
+  nativePath: string;
+  fileName: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private serieProvider: SeriesProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private serieProvider: SeriesProvider,
+    private camera: Camera, private file: File, private filePath: FilePath, private fileChooser: FileChooser) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FormPage');
   }
 
-  salvar(){
+  salvar() {
     this.serieProvider.salvarSeries(this.serie);
-    this.navCtrl.push(HomePage)
+    this.navCtrl.setRoot(HomePage)
+  }
+
+  tirarFoto() {
+    const options: CameraOptions = {
+      quality: 100,
+      targetWidth: 600,
+      targetHeight: 600,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+
+      const pictures = storage().ref("fotos")
+      pictures.putString(base64Image, 'data_url').then((r) => {
+        this.serie.foto = r.downloadURL
+      });
+    }, (err) => {
+      console.log("falha de envio " + err)
+    });
+  }
+
+  enviarArquivo() {
+    this.fileChooser.open().then((fileUri) => {
+      this.filePath.resolveNativePath(fileUri).then((result) => {
+        this.nativePath = result;
+        this.file.resolveLocalFilesystemUrl(this.nativePath).then((res) => {
+
+          let dirPath = res.nativeURL;
+          let dirPathSeguiment = dirPath.split('/');
+          dirPathSeguiment.pop();
+          dirPath = dirPathSeguiment.join('/');
+          this.fileName = res.name
+          this.file.readAsArrayBuffer(dirPath, this.fileName).then((buffer) => {
+            let blob = new Blob([buffer], { type: "image/jpeg" });
+
+            const pictures = storage().ref("fotos/" + name)
+            pictures.put(blob).then((r) => {
+              this.serie.foto = r.downloadURL
+            });
+          })
+        })
+      })
+    })
   }
 }

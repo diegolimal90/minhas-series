@@ -20,6 +20,20 @@
       clearOnEdit="false">
     </ion-textarea>
   </ion-item>
+  <ion-row>
+      <ion-col>
+        <button ion-button icon-start clear small (click)="tirarFoto()">
+          <ion-icon name="camera"></ion-icon>
+          <div>Tirar Foto</div>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-start clear small (click)="enviarArquivo()">
+          <ion-icon name="cloud-upload"></ion-icon>
+          <div>Enviar Imagem</div>
+        </button>
+      </ion-col>
+    </ion-row>
   <ion-item>
     <button ion-button type="submit" block color="primary" (click)="salvar()">Salvar</button>
   </ion-item>
