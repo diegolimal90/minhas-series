@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
@@ -14,7 +14,7 @@ import { Storage } from '@ionic/Storage';
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage{
+export class LoginPage {
 
   public loginForm: FormGroup;
   messageEmail = ""
@@ -23,12 +23,12 @@ export class LoginPage{
   errorPassword = false;
   user: UserDTO;
   creds: CredenciaisDTO = {
-    email:"",
-    senha:""
+    email: "",
+    senha: ""
   }
   usrLogado: UserDTO[] = [];
-  
-  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, 
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder,
     private provider: LoginProvider, private storage: Storage) {
 
     this.loginForm = this.formBuilder.group({
@@ -38,19 +38,19 @@ export class LoginPage{
     });
   }
 
-  ionViewDidLoad() { 
+  ionViewDidLoad() {
     this.getUsuario().then((user) => {
       console.log(user);
       this.usrLogado = user;
 
-      if(this.usrLogado.length > 0){
+      if (this.usrLogado.length > 0) {
         console.log(this.usrLogado[0]);
         this.navCtrl.setRoot(HomePage);
       }
     })
   }
 
-  getUsuario(){
+  getUsuario() {
     let user1: UserDTO[] = [];
 
     return this.storage.forEach((value: UserDTO) => {
@@ -69,14 +69,16 @@ export class LoginPage{
   }
 
   login() {
-    this.provider.getLogin(this.creds).then((data) => {
-      this.user = data
-      this.storage.set("usuario", this.user);
-      this.navCtrl.setRoot(HomePage);
-    }).catch((error) => {
-      console.log(error)
-    });
+    if (this.creds.email !== "" && this.creds.senha !== "") {
+      this.provider.getLogin(this.creds).then((data) => {
+        this.user = data
+        this.storage.set("usuario", this.user);
+        this.navCtrl.setRoot(HomePage);
+      }).catch((error) => {
+        console.log(error)
+      });
+    }
   }
 
-  
+
 }
